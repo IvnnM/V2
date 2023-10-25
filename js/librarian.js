@@ -20,32 +20,54 @@ function sendLoginRequest(form) {
         });
         form.querySelector('[name="password"]').value = '';
       } else if (data.status === "success") {
-        Swal.fire({
-          title: data.message,
-          text: 'Please wait...',
-          timer: 2000,
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500,
           timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading()
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
           },
+        });
+        
+        Toast.fire({
+          icon: 'success',
+          title: 'Signed in successfully',
           willClose: () => {
             if (data.role === "Librarian") {
               window.location.href = "librarian.php";
             } else {
               window.location.href = "index.html";
             }
-          }
+          },
         });
         form.reset();
       } else if (data.status === "warning") {
         Swal.fire({
-          position: "center",
-          icon: "warning",
-          title: "Incorrect password",
+          icon: 'warning',
+          title: 'Incorrect password',
           text: data.message,
-          showConfirmButton: true
+          footer: '<a href="#" id="forgotPasswordLink">Forgot password?</a>',
         });
+        
         form.querySelector('[name="password"]').value = '';
+        
+        // Add a click event listener to the "Forgot password?" link
+        document.getElementById('forgotPasswordLink').addEventListener('click', function (e) {
+          e.preventDefault(); // Prevent the link from navigating
+          Swal.fire({
+            title: 'Relaxation image',
+            text: 'Relax and try to remember your password.',
+            imageUrl: 'https://unsplash.it/400/200',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Relax image',
+            confirmButtonText: 'THANKS',
+          });
+        });
+        // Add a click event listener to the "Forgot password?" link
       }
     },
     error: function () {

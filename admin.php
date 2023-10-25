@@ -39,11 +39,12 @@
     <div class="col">
       <h3><?= htmlspecialchars($user["fullname"]) ?></h3>
     </div>
-    <div class="col-2 d-flex justify-content-end">
-      <button id="logoutBtn" type="button" class="btn btn-danger" onclick="location.href='./php/logout.php'">
+    <div class="col d-flex justify-content-end">
+      <button id="logoutBtn" type="button" class="btn btn-danger text-nowrap" onclick="location.href='./php/logout.php'">
         <i class="fa fa-sign-out"></i> Log Out
       </button>
     </div>
+
   </div>
 
 </div>
